@@ -24,7 +24,7 @@
   align-items: center;
   border: 0;
   outline: none;
-  font-size: 30px;
+  font-size: 25px;
   margin: 5px;
 
   width: 100px;
@@ -46,7 +46,7 @@
   /* 부드러운 트랜지션 효과 추가 */
 }
 
-.month {
+.month_view {
   display: flex;
   /* display가 flex일때 : 가로 가운데 정렬 */
   justify-content: center;
@@ -65,7 +65,10 @@
   /* 원하는 간격으로 조절 */
 }
 
-.month h1 {
-  margin: 0;
-  text-align: center;
+
+.month_view h1 {
+  /* margin: 0; */
+  /* text-align: center; */
 }
+
+.Calendar {}
