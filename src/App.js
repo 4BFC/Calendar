@@ -1,22 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import moment from 'moment';
 import './styled.css';
 
-
 function App() {
 
-  const [month, setMonth] = useState(); 
+  const [month, setMonth] = useState();
   const [nameMonth, setNameMonth] = useState();
-
-  // '+' 버튼이 보여질지 여부를 결정하는 state
-  const [buttonVisible, setButtonVisible] = useState({});
-  // input 박스 생성을 위한 state
-  const [inputBoxes, setInputBoxes] = useState({});
-  // input 안에 텍스트를 위한 state
-  const [inputTexts, setInputTexts] = useState({});
-
-  
-
   const allDays = moment.weekdays();
   const allMonth = moment.months();
   const spDate = moment(`24-${month}-01`, 'YY-MM-DD');
