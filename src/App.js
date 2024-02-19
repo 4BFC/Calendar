@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import moment from 'moment';
 import './styled.css';
-
 
 function App() {
 
@@ -27,6 +26,44 @@ function App() {
 
   const weekDatesRow = [];
 
+  // td에 onMouseEnter 이벤트를 추가하여 '+' 버튼이 보이게 한다.
+  const handleMouseEnter = useCallback((dayFormat) => {
+    setButtonVisible(() => ({
+      [dayFormat]: true
+    }));
+  }, []);
+  
+  // onMouseLeave 이벤트를 추가하여 '+' 버튼을 숨긴다.
+  const handleMouseLeave = useCallback((dayFormat) => {
+    setButtonVisible(() => ({
+      [dayFormat]: false
+    }));
+  }, []);
+  
+// '+' 버튼을 클릭했을 때는 해당 날짜의 input 박스 배열에 새로운 요소를 추가한다.
+  const handleClick = useCallback((dayFormat) => {
+    setInputBoxes(prevState => ({
+      ...prevState,
+      [dayFormat]: [...(prevState[dayFormat] || []), '']
+    }));
+    setInputTexts(prevState => ({
+      ...prevState,
+      [dayFormat]: [...(prevState[dayFormat] || []), '']
+    }));
+  }, []);
+  
+  // 'x' 버튼을 클릭했을 때는 해당 날짜의 input 박스를 삭제한다.
+  const handleDelete = useCallback((dayFormat, index) => {
+    setInputBoxes(prevState => ({
+      ...prevState,
+      [dayFormat]: prevState[dayFormat].filter((_, idx) => idx !== index)
+    }));
+    setInputTexts(prevState => ({
+      ...prevState,
+      [dayFormat]: prevState[dayFormat].filter((_, idx) => idx !== index)
+    }));
+  }, []);
+
 
     // 주 단위 두 번째 for문
   for (let weekStart = first_WeekStartDate.clone(); weekStart.isBefore(last_WeekEndDate); weekStart.add(1, 'week')) {
@@ -38,42 +75,16 @@ function App() {
 
       const dayFormat = day.format('YYYY-MM-DD');
 
-      // td에 onMouseEnter 이벤트를 추가하여 '+' 버튼이 보이게 한다.
-      const handleMouseEnter = () => {
-        setButtonVisible(prevState => ({
-          ...prevState,
-          [dayFormat]: true
-        }));
-      };
-
-      // onMouseLeave 이벤트를 추가하여 '+' 버튼을 숨긴다.
-      const handleMouseLeave = () => {
-        setButtonVisible(prevState => ({
-          ...prevState,
-          [dayFormat]: false
-        }));
-      };
-
-      // '+' 버튼을 클릭했을 때는 해당 날짜의 input 박스 배열에 새로운 요소를 추가한다.
-      const handleClick = () => {
-        setInputBoxes(prevState => ({ // InputBoxes 업데이트
-          ...prevState,
-          [dayFormat]: [...(prevState[dayFormat] || []), '']
-        }));
-        setInputTexts(prevState => ({ // InputTexts 업데이트
-          ...prevState,
-          [dayFormat]: [...(prevState[dayFormat] || []), '']
-        }));
-      };
-
 
       // td태그 형태로  weekDates에 push
       weekDates.push(
-        <td key={dayFormat} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <td key={dayFormat} 
+        onMouseEnter={() => handleMouseEnter(dayFormat)} 
+        onMouseLeave={() => handleMouseLeave(dayFormat)}>
       {day.format('DD')}
-      {buttonVisible[dayFormat] && <button onClick={handleClick}>+</button>}
+      {buttonVisible[dayFormat] && <button onClick={() => handleClick(dayFormat)}>+</button>}
       <br/>
-      {/* input 박스의 onChange 이벤트를 처리하여 입력된 텍스트를 state에 저장합니다. */}
+      {/* input 박스의 onChange 이벤트를 처리하여 입력된 텍스트를 state에 저장한다. */}
       {(inputBoxes[dayFormat] || []).map((_, index) => (
         <div>
           <input
@@ -90,6 +101,7 @@ function App() {
             }}
             style={{width: '100px', height: '10px'}}
           /> 
+               <button onClick={() => handleDelete(dayFormat, index)}>x</button>
           <br/>
         </div>
       ))} 
@@ -157,6 +169,7 @@ function App() {
             </table>
           </div>
         </div>
+
       </div >
     </>
   );
