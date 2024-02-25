@@ -1,5 +1,7 @@
 // import moment from "moment";
 
+// import { months } from "moment";
+
 //오늘 요일 보이기
 console.log(`today is ${moment().format('dddd')}`);
 
@@ -20,7 +22,7 @@ allDays.map((day) => {
 
 //월 보여주기
 const allMonth = moment.months();
-console.log(allMonth);
+console.log("current" + allMonth);
 //map 함수로 월 보여주기
 allMonth.map((month) => {
   console.log(month)
@@ -81,3 +83,5 @@ for (let weekStart = first_WeekStartDate.clone(); weekStart.isBefore(last_WeekEn
     console.log(day.format('YYYY-MM-DD'));
   }
 }
+
+console.log(moment().month() + 1)
